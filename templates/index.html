@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Sentiment Analysis</title>
+    <style>
+    @import url( 'https://fonts.googleapis.com/css?family=Poppins:400, 500, 600,700,800, 900&display=swap');
+    *
+    {
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    section
+    {
+        position:relative;
+        width: 100%;
+        height: 100vh;
+        background: #000200;
+        display: flex;
+        justify-content:center;
+        aLign-items: center;
+        overflow: scroll; /* Automatically adds scrollbar when needed */
+    }
+    section h3
+    {
+        color: transparent;
+        text-align: center;
+        font-weight: 2000;
+        font-size: 25px;
+        color: #fff;
+        margin-top: 20px;
+    }
+    section h4
+    {
+        color: transparent;
+        text-align: center;
+        font-weight: 2000;
+        font-size: 20px;
+        color: #fff;
+        margin-top: 20px;
+    }
+    section .star
+    {
+    position: absolute;
+    top: 0;
+    Left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    animation: animate 8s ease-in-out infinite, backgroundmove 16s linear infinite;
+    }
+    section .star.star1
+    {
+        animation-delay: 0s;
+        background: url(/static/star1.png)
+    }
+
+    section .star.star2
+    {
+        animation-delay: -1s;
+        background: url(/static/star2.png)
+    }
+
+    section .star.star3
+    {
+        animation-delay: -2s;
+        background: url(/static/star3.png)
+    }
+
+    section .star.star4
+    {
+        animation-delay: -3s;
+        background: url(/static/star4.png)
+    }
+
+    section .star.star5
+    {
+        animation-delay: -4s;
+        background: url(/static/star5.png)
+    }
+
+    section .star.star6
+    {
+        animation-delay: -5s;
+        background: url(/static/star6.png)
+    }
+
+    section .star.star7
+    {
+        animation-delay: -6s;
+        background: url(/static/star7.png)
+    }
+
+    section .star.star8
+    {
+        animation-delay: -7s;
+        background: url(/static/star8.png)
+    }
+    @keyframes animate
+    {
+        0%, 20%, 40%, 60%, 80%, 100%
+        {
+            opacity: 0;
+        }
+        10%, 30%, 50%, 70%, 90%
+        {
+            opacity: 1;
+        }
+    }
+    @keyframes backgroundmove
+    {
+        0%
+        {
+            transform: scale(1);
+        }
+        100%
+        {
+            transform: scale(2);
+        }
+    }
+
+        .container {
+            position: absolute;
+            text-align: center;
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 65%;
+            max-width: 600px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #recordButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #stopButton {
+            background-color: #f44336;
+            color: white;
+            display: none;
+        }
+        #transcript {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        textarea {
+            scrollbar-color: red;
+            width: 100%; /* Use percentage for responsive width */
+            max-width: 550px; /* Limit maximum width */
+            height: 250px;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+            resize: vertical; /* Allows vertical resizing */
+            overflow-y: auto; /* Adds vertical scrollbar when needed */
+            text-align: left; /* Text alignment */
+            border-top-left-radius: 18px;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 18px;
+        }
+
+        #results {
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        section p2
+        {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 20px;
+            width: 250px;
+            height: 150px;
+            background-color: #fff;
+            border: 1px solid #000000;
+            display: inline-block;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;
+            border-bottom-left-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <section>
+
+        <div class="container">
+            <h3>Speak & Get Live Sentiment Analysis!⬇️</h3><br>
+            <button id="recordButton">Start Speaking</button>
+            <button id="stopButton">Stop Speaking</button>
+            <div id="transcript">
+                <textarea id="transcriptText" readonly></textarea>
+            </div>
+            <h4>Live Results✅</h4>
+            <div id="results">
+                <p2 id="sentiment"></p2>
+            </div>
+            <h4>By: Umang Tiwari <a href="https://github.com/umangmtiwari">🚀GitHub  </a> <a href="https://www.linkedin.com/in/umang-tiwari-252616210/">🌐LinkedIn</a></h4>
+        </div>
+
+        <div class="star star1"></div>
+        <div class="star star2"></div>
+        <div class="star star3"></div>
+        <div class="star star4"></div>
+        <div class="star star5"></div>
+        <div class="star star6"></div>
+        <div class="star star7"></div>
+        <div class="star star8"></div>        
+    </section>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
