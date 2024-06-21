@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, make_response
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 app = Flask(__name__)
@@ -15,7 +15,11 @@ def process():
         sentiment = analyser.polarity_scores(transcript)
         print(f"Transcript: {transcript}")
         print(f"Sentiment: {sentiment}")
-        return jsonify({"transcript": transcript, "sentiment": sentiment})
+        
+        # Create the response with the correct Content-Type header
+        response = make_response(jsonify({"transcript": transcript, "sentiment": sentiment}))
+        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        return response
 
 if __name__ == '__main__':
     app.run(debug=True)
