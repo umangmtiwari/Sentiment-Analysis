@@ -27,15 +27,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     recognition.onresult = function(event) {
         let transcript = '';
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-            if (event.results[i].isFinal) {
-                transcript += event.results[i][0].transcript;
-            } else {
-                transcript += event.results[i][0].transcript;
-            }
+            transcript += event.results[i][0].transcript;
         }
         transcriptInput.value = transcript;
 
-        // Send transcript to Flask backend
         fetch('/process', {
             method: 'POST',
             headers: {
@@ -46,8 +41,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            
-            // Update sentiment scores and bars
             updateSentimentDisplay(data.sentiment);
         })
         .catch((error) => {
@@ -63,24 +56,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         recognition.stop();
     });
 
-    // Function to update sentiment display
     function updateSentimentDisplay(sentimentData) {
-        const sentimentBoxes = {
-            positive: document.querySelector('.result-box.positive'),
-            negative: document.querySelector('.result-box.negative'),
-            neutral: document.querySelector('.result-box.neutral'),
-            compound: document.querySelector('.result-box.compound')
-        };
-
-        // Update each sentiment box
-        Object.keys(sentimentData).forEach(sentiment => {
-            const score = sentimentData[sentiment];
-            const bar = sentimentBoxes[sentiment].querySelector('.bar');
-            const scoreDisplay = sentimentBoxes[sentiment].querySelector('.score');
-
-            // Update bar width and score display
-            bar.style.width = `${score * 100}%`; // Convert score to percentage
-            scoreDisplay.textContent = score.toFixed(2); // Display score rounded to 2 decimal places
-        });
+        let sentimentHtml = '';
+        for (const [key, value] of Object.entries(sentimentData)) {
+            sentimentHtml += `${key}: ${value.toFixed(2)}<br>`;
+        }
+        sentimentDiv.innerHTML = sentimentHtml;
     }
 });
